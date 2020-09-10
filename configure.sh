@@ -21,8 +21,6 @@ server {
 }
 EOF
 
-nohup nginx >/dev/null 2>&1 &
-
 # Download and install V2Ray
 mkdir /tmp/v2ray
 curl -L -H "Cache-Control: no-cache" -o /tmp/v2ray/v2ray.zip https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip
@@ -72,4 +70,4 @@ cat << EOF > /usr/local/etc/v2ray/config.json
 EOF
 
 # Run V2Ray
-/usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json
+nohup /usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json >/dev/null 2>&1 &
