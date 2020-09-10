@@ -1,12 +1,13 @@
 #!/bin/sh
 
-# Download and install tls-shunt-proxy
-mkdir /tmp/tls-shunt-proxy
-curl -L -H "Cache-Control: no-cache" -o /tmp/tls-shunt-proxy/tls-shunt-proxy-linux-amd64.zip https://github.com/liberal-boy/tls-shunt-proxy/releases/latest/download/tls-shunt-proxy-linux-amd64.zip
-unzip /tmp/tls-shunt-proxy/tls-shunt-proxy-linux-amd64.zip -d /tmp/tls-shunt-proxy
-install -m 755 /tmp/tls-shunt-proxy/tls-shunt-proxy /usr/local/bin/tls-shunt-proxy
+# Download and install V2Ray
+mkdir /tmp/v2ray
+curl -L -H "Cache-Control: no-cache" -o /tmp/v2ray/v2ray.zip https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip
+unzip /tmp/v2ray/v2ray.zip -d /tmp/v2ray
+install -m 755 /tmp/v2ray/v2ray /usr/local/bin/v2ray
+install -m 755 /tmp/v2ray/v2ctl /usr/local/bin/v2ctl
 
 # Remove temporary directory
-rm -rf /tmp/tls-shunt-proxy
+rm -rf /tmp/v2ray
 
-/usr/local/bin/tls-shunt-proxy
+/usr/local/bin/v2ray
