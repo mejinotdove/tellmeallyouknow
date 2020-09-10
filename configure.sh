@@ -1,5 +1,31 @@
 #!/bin/sh
 
+mkdir /usr/local/nginx/logs
+
+cat << EOF > /etc/nginx/nginx.conf
+user nginx;
+worker_processes auto;
+pcre_jit on;
+include /etc/nginx/modules/*.conf;
+events {
+	worker_connections 1024;
+}
+http {
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+	server_tokens off;
+	client_max_body_size 1m;
+	keepalive_timeout 65;
+	sendfile on;
+	tcp_nodelay on;
+	ssl_prefer_server_ciphers on;
+	ssl_session_cache shared:SSL:2m;
+	gzip_vary on;
+ pid /usr/local/nginx/logs/nginx.pid
+ include /etc/nginx/conf.d/*.conf;
+}
+EOF
+
 cat << EOF > /etc/nginx/conf.d/default.conf
 server { 
  listen $PORT;
