@@ -1,22 +1,19 @@
 #!/bin/sh
 
-cat << EOF > /etc/nginx/nginx.conf
+cat << EOF > /etc/nginx/conf.d/vmess.conf
 server { 
  listen $PORT;
-
- location / {
-   # This would be the directory where your React app's static files are stored at
-   root /usr/share/nginx/html;
-   try_files $uri /index.html;
- }
+ listen [::]:$PORT;
  
- location $VMESS_WS_PATH {
-		proxy_pass http://localhost:12345;
-		proxy_redirect off;
-		proxy_http_version 1.1;
-		proxy_set_header Upgrade $http_upgrade;
-		proxy_set_header Connection "upgrade";
-		proxy_set_header Host $http_host;
+ server_name _;
+
+ location /takashi {
+  proxy_pass http://localhost:12345;
+  proxy_redirect off;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "upgrade";
+  proxy_set_header Host $http_host;
  }
 }
 EOF
