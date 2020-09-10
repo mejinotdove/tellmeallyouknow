@@ -1,6 +1,23 @@
 #!/bin/sh
 
-envsubst < /default.conf > /etc/nginx/conf.d/default.conf && nginx
+cat << EOF > /etc/nginx/conf.d/default.conf
+server { 
+ listen $PORT;
+ 
+ server_name _;
+
+ location /takashi {
+  proxy_pass http://127.0.0.1:12345;
+  proxy_redirect off;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "upgrade";
+  proxy_set_header Host $http_host;
+ }
+}
+EOF
+
+nginx
 
 # Download and install V2Ray
 mkdir /tmp/v2ray
