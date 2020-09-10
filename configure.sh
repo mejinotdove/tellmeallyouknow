@@ -54,45 +54,4 @@ vhosts:
           args: 127.0.0.1:12346
 EOF
 
-nohup /usr/local/bin/v2ray/tls-shunt-proxy -config /usr/local/etc/tls-shunt-proxy/config.yaml > /dev/null 2>&1 &
-
-# V2Ray new configuration
-install -d /usr/local/etc/v2ray
-cat << EOF > /usr/local/etc/v2ray/config.json
-{
-    "log":{
-        "access": null,
-        "error":  null,
-        "loglevel": "info"
-    },
-    "inbounds": [
-        {
-            "port": 12345,
-            "protocol": "vmess",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "$UUID",
-                        "security": "none",
-                        "alterId": 0
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "ws",
-                "wsSettings": {
-                    "path": "$WS_PATH"
-                }
-            }
-        }
-    ],
-    "outbounds": [
-        {
-            "protocol": "freedom"
-        }
-    ]
-}
-EOF
-
-# Run V2Ray
-/usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json
+/usr/local/bin/v2ray/tls-shunt-proxy -config /usr/local/etc/tls-shunt-proxy/config.yaml
