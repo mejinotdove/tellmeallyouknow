@@ -85,7 +85,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
             "streamSettings": {
                 "network": "ws",
                 "wsSettings": {
-                    "path": "$VMESS_WS_PATHc"
+                    "path": "$VMESS_WS_PATH"
                 }
             }
         },
