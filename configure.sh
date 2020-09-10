@@ -1,7 +1,5 @@
 #!/bin/sh
 
-mkdir /usr/local/nginx/logs
-
 cat << EOF > /etc/nginx/nginx.conf
 user nginx;
 worker_processes auto;
@@ -30,8 +28,16 @@ cat << EOF > /etc/nginx/conf.d/default.conf
 server { 
  listen $PORT;
  server_name _;
- location /takashi {
+ location $VMESS_WS_PATH {
   proxy_pass http://127.0.0.1:12345;
+  proxy_redirect off;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade \$http_upgrade;
+  proxy_set_header Connection "upgrade";
+  proxy_set_header Host \$http_host;
+ }
+ location $SOCKS_WS_PATH {
+  proxy_pass http://127.0.0.1:23456;
   proxy_redirect off;
   proxy_http_version 1.1;
   proxy_set_header Upgrade \$http_upgrade;
@@ -79,10 +85,26 @@ cat << EOF > /usr/local/etc/v2ray/config.json
             "streamSettings": {
                 "network": "ws",
                 "wsSettings": {
-                    "path": "/takashi"
+                    "path": "$VMESS_WS_PATHc"
                 }
             }
-        }
+        },
+	{
+		"listen":"127.0.0.1",
+		"port": 23456,
+		"protocol": "socks",
+		"settings": {
+			"auth": "noauth",
+			"udp": true,
+			"userLevel": 0
+		},
+		"streamSettings": {
+			"network": "ws",
+			"wsSettings": {
+				"path": "$SOCKS_WS_PATH"
+			}
+		}
+	}
     ],
     "outbounds": [
         {
