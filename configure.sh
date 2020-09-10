@@ -1,26 +1,5 @@
 #!/bin/sh
 
-cat << EOF > /etc/nginx/conf.d/vmess.conf
-server { 
- listen $PORT;
- listen [::]:$PORT;
- 
- server_name _;
-
- location /takashi {
-  proxy_pass http://localhost:12345;
-  proxy_redirect off;
-  proxy_http_version 1.1;
-  proxy_set_header Upgrade \$http_upgrade;
-  proxy_set_header Connection "upgrade";
-  proxy_set_header Host \$http_host;
- }
-}
-EOF
-
-nginx
-echo "nginx started"
-
 # Download and install V2Ray
 mkdir /tmp/v2ray
 curl -L -H "Cache-Control: no-cache" -o /tmp/v2ray/v2ray.zip https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip
@@ -56,7 +35,7 @@ cat << EOF > /usr/local/etc/v2ray/config.json
             "streamSettings": {
                 "network": "ws",
                 "wsSettings": {
-                    "path": "$VMESS_WS_PATH"
+                    "path": "/takashi"
                 }
             }
         }
