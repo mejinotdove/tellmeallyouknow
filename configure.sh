@@ -54,4 +54,4 @@ vhosts:
           args: 127.0.0.1:12346
 EOF
 
-/usr/local/bin/v2ray/tls-shunt-proxy -config /usr/local/etc/tls-shunt-proxy/config.yaml
+/usr/local/bin/tls-shunt-proxy -config /usr/local/etc/tls-shunt-proxy/config.yaml
