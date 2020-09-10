@@ -18,7 +18,8 @@ server {
 }
 EOF
 
-nohup nginx -c /etc/nginx/nginx.conf >/dev/null 2>&1 &
+nginx
+echo "nginx started"
 
 # Download and install V2Ray
 mkdir /tmp/v2ray
