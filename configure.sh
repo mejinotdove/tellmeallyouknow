@@ -3,9 +3,7 @@
 cat << EOF > /etc/nginx/conf.d/default.conf
 server { 
  listen $PORT;
- 
  server_name _;
-
  location /takashi {
   proxy_pass http://127.0.0.1:12345;
   proxy_redirect off;
