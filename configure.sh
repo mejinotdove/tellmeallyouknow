@@ -14,14 +14,14 @@ rm -rf /tmp/v2ray
 mkdir /tmp/tls-shunt-proxy
 curl -L -H "Cache-Control: no-cache" -o /tmp/tls-shunt-proxy/tls-shunt-proxy-linux-amd64.zip https://github.com/liberal-boy/tls-shunt-proxy/releases/latest/download/tls-shunt-proxy-linux-amd64.zip
 unzip /tmp/tls-shunt-proxy/tls-shunt-proxy-linux-amd64.zip -d /tmp/tls-shunt-proxy
-install -m 755 /tmp/tls-shunt-proxy/tls-shunt-proxy /usr/local/bin/tls-shunt-proxy
+install -m 755 /tmp/tls-shunt-proxy/tls-shunt-proxy /usr/local/bin/proxy
 
 # Remove temporary directory
 rm -rf /tmp/tls-shunt-proxy
 
 # tls-shunt-proxy new configuration
-install -d /usr/local/etc/tls-shunt-proxy
-cat << EOF > /usr/local/etc/tls-shunt-proxy/config.yaml
+install -d /usr/local/etc/proxy
+cat << EOF > /usr/local/etc/proxy/config.yaml
 listen: 0.0.0.0:$PORT
 inboundbuffersize: 4
 outboundbuffersize: 32
@@ -37,4 +37,8 @@ vhosts:
           args: 127.0.0.1:12346
 EOF
 
-/usr/local/bin/tls-shunt-proxy -config /usr/local/etc/tls-shunt-proxy/config.yaml
+cat /usr/local/etc/proxy/config.yaml
+
+ls -lh /usr/local/bin/proxy
+
+/usr/local/bin/proxy -config /usr/local/etc/proxy/config.yaml
