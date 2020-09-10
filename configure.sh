@@ -5,6 +5,7 @@ mkdir /usr/local/nginx/logs
 cat << EOF > /etc/nginx/nginx.conf
 user nginx;
 worker_processes auto;
+pid /usr/local/nginx/logs/nginx.pid
 pcre_jit on;
 include /etc/nginx/modules/*.conf;
 events {
@@ -21,7 +22,6 @@ http {
 	ssl_prefer_server_ciphers on;
 	ssl_session_cache shared:SSL:2m;
 	gzip_vary on;
- pid /usr/local/nginx/logs/nginx.pid
  include /etc/nginx/conf.d/*.conf;
 }
 EOF
