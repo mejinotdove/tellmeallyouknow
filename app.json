@@ -3,21 +3,9 @@
     "description": "Deploy V on Heroku.",
     "keywords": ["crosser"],
     "env": {
-        "HOST": {
-            "description": "HOST",
-            "value": "1"
-        },
         "UUID": {
             "description": "UUID",
             "value": "ad806487-2d26-4636-98b6-ab85cc8521f7"
-        },
-        "VMESS_WS_PATH": {
-            "description": "VMESS_WS_PATH",
-            "value": "/"
-        },
-        "SOCKS_WS_PATH": {
-            "description": "SOCKS_WS_PATH",
-            "value": "/"
         }
     },
     "website": "https://www.google.com",
