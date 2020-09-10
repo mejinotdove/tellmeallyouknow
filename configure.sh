@@ -5,7 +5,7 @@ mkdir /usr/local/nginx/logs
 cat << EOF > /etc/nginx/nginx.conf
 user nginx;
 worker_processes auto;
-pid /usr/local/nginx/logs/nginx.pid;
+pid nginx.pid;
 pcre_jit on;
 include /etc/nginx/modules/*.conf;
 events {
