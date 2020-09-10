@@ -1,4 +1,4 @@
-FROM nginx:1.19.2-alpine-perl
+FROM nginx:1.19.2-alpine
 
 RUN apk add --no-cache --virtual .build-deps ca-certificates curl unzip
 
