@@ -23,7 +23,7 @@ rm -rf /tmp/tls-shunt-proxy
 install -d /usr/local/etc/tls-shunt-proxy
 cat << EOF > /usr/local/etc/tls-shunt-proxy/config.yaml
 # listen: 监听地址
-listen: 0.0.0.0:${PORT}
+listen: 0.0.0.0:$PORT
 
 # inboundbuffersize: 入站缓冲区大小，单位 KB, 默认值 4
 # 相同吞吐量和连接数情况下，缓冲区越大，消耗的内存越大，消耗 CPU 时间越少。在网络吞吐量较低时，缓存过大可能增加延迟。
