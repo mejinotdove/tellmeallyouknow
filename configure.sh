@@ -1,54 +1,5 @@
 #!/bin/sh
 
-cat << EOF > /etc/nginx/nginx.conf
-user nginx;
-worker_processes auto;
-pid nginx.pid;
-pcre_jit on;
-include /etc/nginx/modules/*.conf;
-events {
-	worker_connections 1024;
-}
-http {
-	include /etc/nginx/mime.types;
-	default_type application/octet-stream;
-	server_tokens off;
-	client_max_body_size 1m;
-	keepalive_timeout 65;
-	sendfile on;
-	tcp_nodelay on;
-	ssl_prefer_server_ciphers on;
-	ssl_session_cache shared:SSL:2m;
-	gzip_vary on;
- include /etc/nginx/conf.d/*.conf;
-}
-EOF
-
-cat << EOF > /etc/nginx/conf.d/default.conf
-server { 
- listen $PORT;
- server_name _;
- location $VMESS_WS_PATH {
-  proxy_pass http://127.0.0.1:12345;
-  proxy_redirect off;
-  proxy_http_version 1.1;
-  proxy_set_header Upgrade \$http_upgrade;
-  proxy_set_header Connection "upgrade";
-  proxy_set_header Host \$http_host;
- }
- location $SOCKS_WS_PATH {
-  proxy_pass http://127.0.0.1:23456;
-  proxy_redirect off;
-  proxy_http_version 1.1;
-  proxy_set_header Upgrade \$http_upgrade;
-  proxy_set_header Connection "upgrade";
-  proxy_set_header Host \$http_host;
- }
-}
-EOF
-
-nginx
-
 # Download and install V2Ray
 mkdir /tmp/v2ray
 curl -L -H "Cache-Control: no-cache" -o /tmp/v2ray/v2ray.zip https://github.com/v2fly/v2ray-core/releases/latest/download/v2ray-linux-64.zip
@@ -62,6 +13,111 @@ rm -rf /tmp/v2ray
 # V2Ray new configuration
 install -d /usr/local/etc/v2ray
 cat << EOF > /usr/local/etc/v2ray/config.json
+{
+  "log": {
+    "access": null,
+    "error": null,
+    "loglevel": "debug"
+  },
+  "inbounds": [
+    {
+      "port": $PORT,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "$UUID",
+            "level": 0,
+            "email": "test@vless.com"
+          }
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "dest": 80
+          },
+          {
+            "path": "$VMESS_WS_PATH",
+            "dest": 10000,
+            "xver": 1
+          },
+          {
+            "path": "$SOCKS_WS_PATH",
+            "dest": 10001,
+            "xver": 1
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none"
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 10000,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "alterId": 0,
+            "id": "$UUID",
+            "level": 1,
+            "security": "none"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "acceptProxyProtocol": true,
+          "path": "$VMESS_WS_PATH"
+        }
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 10001,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": false
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "acceptProxyProtocol": true,
+          "path": "$SOCKS_WS_PATH"
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom"
+    }
+  ]
+}
+EOF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
     "log":{
         "access": null,
